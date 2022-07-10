@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Component should render correctly 1`] = `
+.emotion-0 {
+  width: 243px;
+  padding: 8px 16px;
+  height: 48px;
+}
+
+<div>
+  <button
+    class="ant-btn ant-btn-default emotion-0 emotion-1"
+    type="button"
+  >
+    <span>
+      Test Text
+    </span>
+  </button>
+</div>
+`;

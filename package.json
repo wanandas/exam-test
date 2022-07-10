@@ -1,0 +1,76 @@
+{
+  "name": "satang-corp-test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "react-app-rewired start",
+    "start": "serve ./build",
+    "build": "react-app-rewired build",
+    "analyze": "yarn build && source-map-explorer 'build/static/js/*.js'",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint",
+    "format": "eslint --fix",
+    "pre-commit": "cross-env FORCE_COLOR=1 lint-staged",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.1.4",
+    "@emotion/styled": "^11.0.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "antd": "^4.21.5",
+    "axios": "^0.21.1",
+    "core-js": "^3.8.3",
+    "lodash": "^4.17.20",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-helmet": "^6.1.0",
+    "react-responsive": "^8.2.0",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "4.0.3",
+    "regenerator-runtime": "^0.13.7"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.14.5",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@emotion/babel-plugin": "^11.1.2",
+    "@emotion/babel-preset-css-prop": "^11.0.0",
+    "@emotion/jest": "^11.1.0",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "cross-env": "^7.0.3",
+    "customize-cra": "^1.0.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.2.1",
+    "react-app-rewired": "^2.1.8",
+    "serve": "^12.0.0",
+    "source-map-explorer": "^2.5.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

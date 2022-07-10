@@ -1,0 +1,29 @@
+{
+  "presets": [
+    "@babel/preset-env",
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic",
+        "importSource": "@emotion/react"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-nullish-coalescing-operator",
+    "lodash",
+    "@emotion",
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@components": "./src/components",
+          "@core": "./src/core",
+          "@locales": "./src/locales",
+          "@routers": "./src/routers",
+          "@constants": "./src/constants"
+        }
+      }
+    ]
+  ]
+}

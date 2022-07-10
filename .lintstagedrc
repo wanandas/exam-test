@@ -1,0 +1,8 @@
+{
+  "*.js": [
+    "eslint -c config/lint-staged.eslintrc.js --fix"
+  ],
+  "*": [
+    "yarn test --bail --findRelatedTests"
+  ]
+}

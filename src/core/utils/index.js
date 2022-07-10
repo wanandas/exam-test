@@ -1,0 +1,1 @@
+export { getInstance } from './axios'
