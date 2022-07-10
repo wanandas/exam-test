@@ -9,6 +9,7 @@ This is Front-end test project.
 - UI Framework using [Antd](https://ant.design/)
 - Testing using [Jest](https://jestjs.io/) and [React Testing Library](https://github.com/testing-library/react-testing-library)
 - Code validation and pre-commit git hook using [ESLint](https://eslint.org/), [Husky](https://www.npmjs.com/package/husky) and [LintStage](https://github.com/okonet/lint-staged)
+- Redux toolkit using [Redux](https://redux.js.org/) and [Redux Saga](https://redux-saga.js.org/)
 - Bundle Analyzer
 
 ### Setup
