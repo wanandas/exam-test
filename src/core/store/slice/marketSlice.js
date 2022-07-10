@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   current: {},
   loading: false,
+  stream: [],
+  params: {},
   cryptoList: [
     { symbol: 'BTC_THB', name: 'BTC/THB' },
     { symbol: 'BUSD_THB', name: 'BUSD/THB' },
@@ -14,20 +16,20 @@ export const marketSlice = createSlice({
   name: 'market',
   initialState,
   reducers: {
-    getCurrentFetching: (state) => {
-      state.loading = true
+    updateCurrentVolume: (state, action) => {
+      state.stream = action.payload
     },
-    getCurrentSuccess: (state, action) => {
-      state.current = action.payload
-      state.loading = false
+    getCurrentFetching: (state, action) => {
+      state.current = action.payload.find((e) => state.params === e.symbol)
     },
-    getCurrentFailure: (state) => {
-      state.loading = false
-    }
+    getParams: (state, action) => {
+      state.params = action.payload
+    },
+    watchLive: (state, action) => {}
   }
 })
 
-export const { getCurrentFailure, getCurrentFetching, getCurrentSuccess } =
+export const { updateCurrentVolume, getCurrentFetching, watchLive, getParams } =
   marketSlice.actions
 
 export default marketSlice.reducer

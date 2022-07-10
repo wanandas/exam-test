@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { getCurrentSuccess } from './slice/marketSlice'
 import env from '@core/config/env'
 import { symbolToName } from '@core/utils/helper'
+import { getCurrentSuccess } from '@core/store/slice/marketSlice'
 
 function* getPrice({ payload }) {
   try {
@@ -12,7 +12,7 @@ function* getPrice({ payload }) {
     const data = yield response.json()
     yield put(getCurrentSuccess({ ...data, name: symbolToName(payload) }))
   } catch (error) {
-    console.log(error)
+    console.err(error)
   }
 }
 

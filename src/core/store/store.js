@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import marketSlice from './slice/marketSlice'
 import createSagaMiddleware from 'redux-saga'
-import marketSaga from './marketSaga'
+import watchSaga from './saga/marketLiveSaga'
 
 const saga = createSagaMiddleware()
 
@@ -10,4 +10,4 @@ export const store = configureStore({
   middleware: [saga]
 })
 
-saga.run(marketSaga)
+saga.run(watchSaga)

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { withPage } from '@core/hocs'
 import { Button, Card } from '@components/atoms'
-import { getCurrentFetching } from '@core/store/slice/marketSlice'
+import { getParams } from '@core/store/slice/marketSlice'
 
 import {
   ButtonWrapper,
@@ -16,9 +16,7 @@ import {
 const MarketPage = () => {
   const cryptoVolumeList = useSelector((state) => state.cryptoList)
   const currentVolume = useSelector((state) => state.current)
-  const loading = useSelector((state) => state.loading)
   const dispatch = useDispatch()
-
   const navigate = useNavigate()
   const params = useParams()
 
@@ -28,6 +26,15 @@ const MarketPage = () => {
     },
     [navigate]
   )
+  useEffect(() => {
+    dispatch(getParams(params.symbol.toLocaleLowerCase()))
+    if (params.symbol) {
+      dispatch({
+        type: 'market/watchLive',
+        payload: params.symbol.toLocaleLowerCase()
+      })
+    }
+  }, [dispatch, params.symbol])
 
   useEffect(() => {
     if (
@@ -38,20 +45,7 @@ const MarketPage = () => {
     ) {
       navigate('/market/BTC_THB')
     }
-    if (!currentVolume || currentVolume.symbol !== params.symbol) {
-      dispatch(getCurrentFetching(params.symbol))
-    }
-    // remove activeCrypto from dependency
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cryptoVolumeList, navigate, params.symbol])
-
-  useEffect(() => {
-    const timer = setInterval(
-      () => dispatch(getCurrentFetching(params.symbol)),
-      5000
-    )
-    return () => clearInterval(timer)
-  }, [dispatch, params.symbol])
+  }, [cryptoVolumeList, dispatch, navigate, params.symbol])
 
   return (
     <MarketPageWrapper>
@@ -71,7 +65,10 @@ const MarketPage = () => {
             </Button>
           ))}
         </ButtonWrapper>
-        <Card title={currentVolume && currentVolume.name} loading={loading}>
+        <Card
+          title={currentVolume && currentVolume.name}
+          loading={!(currentVolume && currentVolume.name)}
+        >
           <h1>{currentVolume && currentVolume.lastPrice}</h1>
           <p>Volumes : {currentVolume && currentVolume.volume}</p>
         </Card>
