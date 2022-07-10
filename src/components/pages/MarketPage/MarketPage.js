@@ -1,53 +1,26 @@
-import { useEffect, useCallback, useMemo, useState } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { includes } from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { withPage } from '@core/hocs'
-import { useFetch } from '@core/hooks'
-import { symbolToName } from '@core/utils/helper'
 import { Button, Card } from '@components/atoms'
+import { getCurrentFetching } from '@core/store/slice/marketSlice'
 
 import {
   ButtonWrapper,
   ControlWrapper,
   MarketPageWrapper
 } from './MarketPage.styled'
-import { includes } from 'lodash'
 
 const MarketPage = () => {
-  const [activeCrypto, setActiveCrypto] = useState()
-  const cryptoVolumeList = useMemo(() => {
-    return [
-      { symbol: 'btc_thb', name: 'BTC/THB' },
-      { symbol: 'busd_thb', name: 'BUSD/THB' },
-      { symbol: 'usdt_thb', name: 'USDT/THB' }
-    ]
-  }, [])
-
-  const { execute: getItem } = useFetch({
-    url: '/v3/ticker/24hr',
-    method: 'GET'
-  })
+  const cryptoVolumeList = useSelector((state) => state.cryptoList)
+  const currentVolume = useSelector((state) => state.current)
+  const loading = useSelector((state) => state.loading)
+  const dispatch = useDispatch()
 
   const navigate = useNavigate()
   const params = useParams()
-
-  const getPrice = useCallback(
-    async (symbol = params.symbol) => {
-      await getItem(
-        {
-          payload: {
-            symbol: symbol
-          }
-        },
-        {
-          onSuccess: ({ data }) => {
-            setActiveCrypto({ ...data, name: symbolToName(data.symbol) })
-          }
-        }
-      )
-    },
-    [getItem, params.symbol]
-  )
 
   const handleClick = useCallback(
     (symbol) => {
@@ -63,17 +36,22 @@ const MarketPage = () => {
         params.symbol
       )
     ) {
-      navigate('/market/btc_thb')
+      navigate('/market/BTC_THB')
     }
-    if (!activeCrypto || activeCrypto.symbol !== params.symbol) {
-      getPrice()
+    if (!currentVolume || currentVolume.symbol !== params.symbol) {
+      dispatch(getCurrentFetching(params.symbol))
     }
-  }, [activeCrypto, cryptoVolumeList, getPrice, navigate, params.symbol])
+    // remove activeCrypto from dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cryptoVolumeList, navigate, params.symbol])
 
   useEffect(() => {
-    const timer = setInterval(getPrice, 5000)
+    const timer = setInterval(
+      () => dispatch(getCurrentFetching(params.symbol)),
+      5000
+    )
     return () => clearInterval(timer)
-  }, [getPrice])
+  }, [dispatch, params.symbol])
 
   return (
     <MarketPageWrapper>
@@ -83,7 +61,9 @@ const MarketPage = () => {
         <ButtonWrapper>
           {cryptoVolumeList.map((item) => (
             <Button
-              type={`${item.symbol === params.symbol ? 'primary' : 'default'}`}
+              type={`${
+                includes(params.symbol, item.symbol) ? 'primary' : 'default'
+              }`}
               key={item.symbol}
               onClick={() => handleClick(item.symbol)}
             >
@@ -91,12 +71,10 @@ const MarketPage = () => {
             </Button>
           ))}
         </ButtonWrapper>
-        {activeCrypto && (
-          <Card title={activeCrypto.name}>
-            <h1>{activeCrypto.lastPrice}</h1>
-            <p>Volumes : {activeCrypto.volume}</p>
-          </Card>
-        )}
+        <Card title={currentVolume && currentVolume.name} loading={loading}>
+          <h1>{currentVolume && currentVolume.lastPrice}</h1>
+          <p>Volumes : {currentVolume && currentVolume.volume}</p>
+        </Card>
       </ControlWrapper>
     </MarketPageWrapper>
   )
