@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 export const MarketPageWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 100px 40px;
+  height: 100vh;
   flex-direction: column;
   align-items: center;
   font-weight: 700;
@@ -21,6 +21,11 @@ export const ControlWrapper = styled.div`
   display: grid;
   grid-gap: 12px;
   grid-template-columns: repeat(2, minmax(200px, 1fr));
+
+  .ant-card {
+    height: 200px;
+  }
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     grid-gap: 32px;
